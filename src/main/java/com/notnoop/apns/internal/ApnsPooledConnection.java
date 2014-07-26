@@ -28,8 +28,11 @@ public class ApnsPooledConnection implements ApnsConnection {
         this.prototypes = new ConcurrentLinkedQueue<ApnsConnection>();
     }
 
+    //构造ThreadLocal变量,为什么要在复制一份新的线程池呢?
     private final ThreadLocal<ApnsConnection> uniquePrototype =
         new ThreadLocal<ApnsConnection>() {
+    	
+    	//initialValue是ThreadLocal类的方法,用于提供变量的初始值
         protected ApnsConnection initialValue() {
             ApnsConnection newCopy = prototype.copy();
             prototypes.add(newCopy);
