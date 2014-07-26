@@ -34,6 +34,8 @@ public class ApnsPooledConnection implements ApnsConnection {
 
     private final ThreadLocal<ApnsConnection> uniquePrototype =
         new ThreadLocal<ApnsConnection>() {
+    	
+    	//拷贝一份线程池
         protected ApnsConnection initialValue() {
             ApnsConnection newCopy = prototype.copy();
             prototypes.add(newCopy);
@@ -42,8 +44,10 @@ public class ApnsPooledConnection implements ApnsConnection {
     };
 
     public void sendMessage(final ApnsNotification m) throws NetworkIOException {
-        executors.execute(new Runnable() {
+        /*通过创建新的Runnable对象进行执行*/
+    	executors.execute(new Runnable() {
             public void run() {
+            	//uniqueProtoType获取的对象为ApnsConnectionImpl
                 uniquePrototype.get().sendMessage(m);
             }
         });

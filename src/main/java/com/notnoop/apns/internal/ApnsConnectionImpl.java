@@ -188,6 +188,7 @@ public class ApnsConnectionImpl implements ApnsConnection {
             socket = null;
         }
 
+        //socket断掉后自动重新打开
         if (socket == null || socket.isClosed()) {
             try {
                 if (proxy == null) {
