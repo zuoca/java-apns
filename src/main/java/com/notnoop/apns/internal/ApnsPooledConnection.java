@@ -35,7 +35,6 @@ public class ApnsPooledConnection implements ApnsConnection {
     private final ThreadLocal<ApnsConnection> uniquePrototype =
         new ThreadLocal<ApnsConnection>() {
     	
-    	//拷贝一份线程池
         protected ApnsConnection initialValue() {
             ApnsConnection newCopy = prototype.copy();
             prototypes.add(newCopy);

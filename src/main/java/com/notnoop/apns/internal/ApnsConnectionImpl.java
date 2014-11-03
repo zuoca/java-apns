@@ -287,11 +287,8 @@ public class ApnsConnectionImpl implements ApnsConnection {
             logger.debug("Removing notification from cache " + notification);
         }
     }
-
-    static int i=0;
+    
     public ApnsConnectionImpl copy() {
-    	
-    	System.out.println("copy for "+i++);
     	//通过拷贝返回不同的对象,减少锁问题
         return new ApnsConnectionImpl(factory, host, port, proxy, reconnectPolicy.copy(),
                 delegate, errorDetection, cacheLength, autoAdjustCacheLength);
