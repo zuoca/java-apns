@@ -119,7 +119,8 @@ public class ApnsConnectionImpl implements ApnsConnection {
                         }
                         int statusCode = bytes[1] & 0xFF;
                         DeliveryError e = DeliveryError.ofCode(statusCode);
-
+                        
+                        //发送失败时会有响应,响应中2-5的4个字节表示标示符
                         int id = Utilities.parseBytes(bytes[2], bytes[3], bytes[4], bytes[5]);
 
                         Queue<ApnsNotification> tempCache = new LinkedList<ApnsNotification>();
@@ -137,6 +138,8 @@ public class ApnsConnectionImpl implements ApnsConnection {
                         }
 
                         if (foundNotification) {
+                        	
+                        	//发送错误委托
                             delegate.messageSendFailed(notification, new ApnsDeliveryErrorException(e));
                         } else {
                             cachedNotifications.addAll(tempCache);
@@ -238,6 +241,8 @@ public class ApnsConnectionImpl implements ApnsConnection {
             try {
                 attempts++;
                 Socket socket = socket();
+                
+                //写入推送消息
                 socket.getOutputStream().write(m.marshall());
                 socket.getOutputStream().flush();
                 cacheNotification(m);
